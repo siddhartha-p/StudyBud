@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm # type: ignore
 from .models import Room
 
 class RoomForm(ModelForm):

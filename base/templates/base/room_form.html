@@ -3,7 +3,7 @@
 {% block content %}
 <div>
     <form method="post" action=""><!--empty action field processes the information in the same URL-->
-        {% csrf_token %} <!-- inside of every form in django we need to include this tokeni-->
+        {% csrf_token %} <!-- inside of every form in django we need to include this token-->
         {{form.as_p}}
         <input type="submit" value="Submit">
    
