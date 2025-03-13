@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect # type: ignore
 from django.http import HttpResponse         # type: ignore
-from django.db.models import Q
+from django.db.models import Q # type: ignore
 from .models import Room,Topic
 from .forms import RoomForm
 # Create your views here.
