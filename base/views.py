@@ -1,15 +1,36 @@
 from django.shortcuts import render,redirect # type: ignore
+from django.contrib import messages #type:ignore
 from django.http import HttpResponse         # type: ignore
 from django.db.models import Q # type: ignore
+from django.contrib.auth.models import User # type: ignore
+from django.contrib.auth import authenticate,login,logout #type:ignore
 from .models import Room,Topic
 from .forms import RoomForm
 # Create your views here.
 
-# rooms=[
-#     {'id':1, 'name':'lets learn Python'},
-#     {'id':2, 'name':'lets learn javascript'},
-#     {'id':3, 'name':'lets learn C#'}
-# ]
+
+def loginPage(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+
+        try:
+            user=User.objects.get(username=username)
+        except:
+            messages.error(request, "User does not exist")
+        
+        user=authenticate(request,username=username,password=password)
+
+        if user is not None:
+            login(request,user) #creates a session in the database and inside the browser
+            return redirect('home')
+        else:
+            messages.error(request, "Username or password does not exist")
+            
+
+    context={}
+    return render(request,'base/login_register.html',context)
+
 
 def home(request):
     q=request.GET.get('q') if request.GET.get('q') != None else ''
