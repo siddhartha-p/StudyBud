@@ -4,6 +4,7 @@ from django.http import HttpResponse         # type: ignore
 from django.contrib.auth.decorators import login_required #type:ignore
 from django.db.models import Q # type: ignore
 from django.contrib.auth.models import User # type: ignore
+from django.contrib.auth.forms import UserCreationForm #type:ignore
 from django.contrib.auth import authenticate,login,logout #type:ignore
 from .models import Room,Topic
 from .forms import RoomForm
@@ -11,12 +12,13 @@ from .forms import RoomForm
 
 
 def loginPage(request):
+    page='login'
 
     if request.user.is_authenticated:
         return redirect('home')
 
     if request.method=='POST':
-        username=request.POST.get('username')
+        username=request.POST.get('username').lower()
         password=request.POST.get('password')
 
         try:
@@ -33,7 +35,7 @@ def loginPage(request):
             messages.error(request, "Username or password does not exist")
             
 
-    context={}
+    context={'page':page}
     return render(request,'base/login_register.html',context)
 
 
@@ -42,7 +44,22 @@ def logoutUser(request):
     logout(request) #deletes the session from the browser
     return redirect('home')
 
-    
+
+def registerPage(request):
+    form=UserCreationForm()
+    if request.method=="POST":
+        form=UserCreationForm(request.POST)
+        if form.is_valid():
+            user=form.save(commit=False)
+            user.username=user.username.lower()
+            user.save()
+            login(request,user)
+            return redirect('home')
+        else:
+            messages.error(request, "There was some error processing your registration")
+        
+        
+    return render(request,'base/login_register.html',{'form':form})
 
 
 def home(request):
