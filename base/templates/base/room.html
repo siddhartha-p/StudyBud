@@ -7,5 +7,20 @@
 <h5>
     {{room.decription}}
 </h5>
+<div class="commet-wrapper">
+    <h3>Conversations</h3>
+
+    {% for message in room_messages %}
+    <div>
+        <small>@ {{message.user}}  {{message.created|timesince}} ago</small>
+        <p>{{message}}</p>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<hr>
+
 
 {% endblock content %}
