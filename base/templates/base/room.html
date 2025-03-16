@@ -13,14 +13,23 @@
     {% for message in room_messages %}
     <div>
         <small>@ {{message.user}}  {{message.created|timesince}} ago</small>
-        <p>{{message}}</p>
+        <p>{{message.body}}</p>
+        <hr>
     </div>
 
     {% endfor %}
 
 </div>
 
-<hr>
+<div class="comment-form">
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <input type="text" name="body" placeholder="enter your comment here">
+        
+
+    </form>
+</div>
 
 
 {% endblock content %}
