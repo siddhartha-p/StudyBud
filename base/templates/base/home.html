@@ -52,6 +52,11 @@
     </div>
     <div>
         <h3>Rescent Activity</h3>
+        {% for message in room_messages %}
+        <div>
+            <small>@{{message.user}}  {{message.created|timesince}} ago</small>
+        </div>
+        {% endfor %}
     </div>
     
 </div>
